@@ -439,6 +439,10 @@
         renderer.setSize(w, h, false);
         camera.aspect = w / h;
         camera.updateProjectionMatrix();
+        // setSize borra el canvas y el ResizeObserver corre justo antes del pintado
+        // (después del rAF), así que hay que volver a renderizar aquí o parpadea
+        // durante la transición de flex-grow del panel
+        renderer.render(scene, camera);
       };
       new ResizeObserver(resize).observe(host);
       resize();
